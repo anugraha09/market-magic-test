@@ -55,7 +55,7 @@ export interface Subscription {
 export const createSubscription = (market: string, tier: Tier): Subscription => ({
   market,
   tier,
-  allowance: TIER_HOURS[tier],
+  allowance: TIER_HOURS[tier]!,
   used: 0,
   active: true,
   paymentState: "pending",
@@ -79,7 +79,7 @@ export function consumeHours(sub: Subscription, hours: number): Outcome {
 }
 
 export function changeTier(sub: Subscription, tier: Tier): Outcome {
-  const allowance = TIER_HOURS[tier];
+  const allowance = TIER_HOURS[tier]!;
   const next: Subscription = {
     ...sub,
     tier,
@@ -99,7 +99,7 @@ export type Card = "success" | "declined" | "retry";
 
 export function processPayment(sub: Subscription, card: Card): Outcome {
   const market = getMarket(sub.market);
-  const amount = market.prices[sub.tier];
+  const amount = market.prices[sub.tier]!;
   const price = `${amount.toFixed(2)} ${market.currency}`;
   if (card === "declined")
     return {
